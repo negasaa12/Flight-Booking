@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flask_bcrypt import Bcrypt
 
+bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 
@@ -18,7 +19,7 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), nullable=False)
-    password = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
@@ -54,7 +55,7 @@ class User(db.Model):
         else:
             return False
 
-    def signup(cls, username, email, password, image_url):
+    def signup(cls, username, email, password):
         """Sign up user.
 
         Hashes password and adds user to system.
@@ -65,8 +66,8 @@ class User(db.Model):
         user = User(
             username=username,
             email=email,
-            password=hashed_pwd,
-            image_url=image_url,
+            password=hashed_pwd
+
         )
 
         db.session.add(user)
@@ -91,12 +92,13 @@ class Flight(db.Model):
 
     price = db.Column(db.Integer, nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     airline_id = db.Column(db.Integer, db.ForeignKey('airline.id'))
 
     airline = db.relationship('Airline', backref='flights')
-    user = db.relationship('User', backref='users')
+    user = db.relationship('User', backref='flights',
+                           primaryjoin="Flight.user_id == User.id")
 
 
 class Airline(db.Model):

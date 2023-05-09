@@ -36,7 +36,7 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/signup' methods=["POST", "GET"])
+@app.route('/signup', methods=["POST", "GET"])
 def signup():
 
     form = SignUp()
@@ -48,7 +48,10 @@ def signup():
         first_name = form.first_name.data
         last_name = form.last_name.data
 
-        
+        user = User.register(username=username, password=password,
+                             email=email, first_name=first_name, last_name=last_name)
+
+        db.session.commit()
 
     return render_template('signup.html', form=form)
 
