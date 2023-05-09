@@ -5,7 +5,7 @@ from models import db, connect_db, User, Flight
 from flask_bcrypt import Bcrypt
 import requests
 
-CURR_USER_KEY = 'curr_user'
+# CURR_USER_KEY = 'curr_user'
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///flight_db'
@@ -30,15 +30,14 @@ url = 'https://test.api.amadeus.com/v2/'
 @app.route('/')
 def home():
 
-    if session is 0:
+    return redirect('/signup')
 
-        redirect('/signup')
-
-    return render_template('home.html')
+    # return render_template('home.html')
 
 
 @app.route('/signup', methods=["POST", "GET"])
 def signup():
+    """Sign Up Users"""
 
     form = SignUp()
 
@@ -51,7 +50,7 @@ def signup():
 
         user = User.register(username=username, password=password,
                              email=email, first_name=first_name, last_name=last_name)
-
+        session['user_id'] = user.id
         db.session.commit()
     else:
         return render_template('signup.html', form=form)
@@ -59,6 +58,7 @@ def signup():
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
+    """Handle login Users"""
 
     form = LogInForm()
 
@@ -67,13 +67,24 @@ def login():
         user = User.authenticate(form.username.data, form.password.data)
 
         if user:
-            session[CURR_USER_KEY] = user.id
-            flash(f"hello, {user.username}!",  'success')
+
+            flash(f"Welcome Back, {user.username}!")
+            session['user_id'] = user.id
             return redirect('/')
 
         flash("Invalid credentials.", 'danger')
 
     return render_template('login.html', form=form)
+
+
+@app.route('/user/<int:user_id>')
+def user_detail(user_id):
+
+    if "user_id" not in session:
+        flash("Please Login First!")
+        return redirect('/signup')
+
+    return render_template('user_details.html', user=user)
 
 
 @app.route('/search', methods=["POST", "GET"])
