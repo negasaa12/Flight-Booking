@@ -72,9 +72,9 @@ class User(db.Model):
         db.session.add(user)
 
 
-class Ticket(db.Model):
+class Flight(db.Model):
 
-    __tablename__ = 'tickets'
+    __tablename__ = 'flights'
 
     id = db.Column(
         db.Integer,
@@ -89,6 +89,23 @@ class Ticket(db.Model):
 
     adult = db.Column(db.Integer, nullable=False)
 
+    price = db.Column(db.Integer, nullable=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    airline_id = db.Column(db.Integer, db.ForeignKey('airline.id'))
+
+    airline = db.relationship('Airline', backref='flights')
     user = db.relationship('User', backref='users')
+
+
+class Airline(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    name = db.Column(db.String, nullable=False)
+
+    code = db.Column(db.String, nullable=False)
