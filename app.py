@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import AddFligtForm, SignUp
+from forms import AddFligtForm, SignUp, LogInForm
 from models import db, connect_db, User, Flight
 from flask_bcrypt import Bcrypt
 import requests
@@ -52,8 +52,18 @@ def signup():
                              email=email, first_name=first_name, last_name=last_name)
 
         db.session.commit()
+    else:
+        return render_template('signup.html', form=form)
 
-    return render_template('signup.html', form=form)
+
+@app.route('/login', methods=["POST", "GET"])
+def login():
+
+    form = LogInForm()
+
+    # if form.validate_on_submit():
+
+    return render_template('login.html', form=form)
 
 
 @app.route('/search', methods=["POST", "GET"])

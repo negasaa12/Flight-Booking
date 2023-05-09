@@ -26,3 +26,10 @@ class SignUp(FlaskForm):
     password = PasswordField('Password', validators=[Length(min=6)])
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
+
+
+class LogInForm(FlaskForm):
+    """Form for logging in Users"""
+
+    username = StringField('Username', validators=[DataRequired()])
+    password = StringField('Password', validators=[DataRequired()])
