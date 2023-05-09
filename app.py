@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import AddFligtForm, SignUp, LogInForm
 from models import db, connect_db, User, Flight
 from flask_bcrypt import Bcrypt
 import requests
 
+CURR_USER_KEY = 'curr_user'
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///flight_db'
@@ -61,7 +62,16 @@ def login():
 
     form = LogInForm()
 
-    # if form.validate_on_submit():
+    if form.validate_on_submit():
+
+        user = User.authenticate(form.username.data, form.password.data)
+
+        if user:
+            session[CURR_USER_KEY] = user.id
+            flash(f"hello, {user.username}!",  'success')
+            return redirect('/')
+
+        flash("Invalid credentials.", 'danger')
 
     return render_template('login.html', form=form)
 

@@ -32,4 +32,4 @@ class LogInForm(FlaskForm):
     """Form for logging in Users"""
 
     username = StringField('Username', validators=[DataRequired()])
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
