@@ -52,6 +52,7 @@ def signup():
                              email=email, first_name=first_name, last_name=last_name)
         session['user_id'] = user.id
         db.session.commit()
+        return redirect('/login')
     else:
         return render_template('signup.html', form=form)
 
@@ -70,7 +71,7 @@ def login():
 
             flash(f"Welcome Back, {user.username}!")
             session['user_id'] = user.id
-            return redirect('/')
+            return redirect(f'/user/{user.id}')
 
         flash("Invalid credentials.", 'danger')
 
@@ -79,6 +80,8 @@ def login():
 
 @app.route('/user/<int:user_id>')
 def user_detail(user_id):
+
+    user = User.query.get_or_404(user_id)
 
     if "user_id" not in session:
         flash("Please Login First!")
