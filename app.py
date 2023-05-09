@@ -48,7 +48,7 @@ def signup():
         first_name = form.first_name.data
         last_name = form.last_name.data
 
-        user =
+        
 
     return render_template('signup.html', form=form)
 
