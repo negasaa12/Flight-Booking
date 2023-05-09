@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, FloatField, BooleanField, IntegerField, SelectField, PasswordField, DateField
-from wtforms.validators import InputRequired, Email, Optional, DataRequired, URL
+from wtforms.validators import InputRequired, Email, Optional, DataRequired, URL, Length, Email
 
 
 class AddFligtForm(FlaskForm):
@@ -16,3 +16,13 @@ class AddFligtForm(FlaskForm):
 
     people = IntegerField('Adults', validators=[InputRequired(
         message="Please Choose the number of Adults")])
+
+
+class SignUp(FlaskForm):
+    """Form for adding users."""
+
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[Length(min=6)])
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
