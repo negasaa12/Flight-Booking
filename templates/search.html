@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %} 
+    <h1>Find Your Flight For Your Travels </h1>
+    
+<div class="input-group mb-4">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+    
+        {% for field in form if field.widget.input_type != 'hidden' %}
+    
+            <div class="form-group">
+                {{field.label}}
+                {{field(class_="form-control")}}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Submit</button>
+    
+    </form>
+    </div>
+</div>
+
+{% for item in flights %}
+<u>
+   <li> origin:{{item.origin}}</li>
+   <li>destinaion: {{item.arrival}}</li>
+   <li> depature: {{item.depature_date}}</li>
+   <li> return : {{item.return_date}}</li>
+   <li> price: {{item.price}}</li>
+   <li> adults: {{item.adults}}</li>
+
+</u>
+{% endfor %}
+
+
+
+
+  {% endblock %}

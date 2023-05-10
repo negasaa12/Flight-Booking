@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "QAGOnrHSPKNAu6OQqZ8qRZK7hsZ7"
+token = "Nt6495Wb2mED5jyRVuxtcPM8zZDN"
 
 headers = {'Authorization': f'Bearer {token}'}
 
@@ -92,8 +92,9 @@ def user_detail(user_id):
 
 
 @app.route('/search', methods=["POST", "GET"])
-def show_flights():
+def search_flights():
     form = AddFligtForm()
+    flights = []
 
     if "user_id" not in session:
         flash("Please Login First!")
@@ -114,10 +115,8 @@ def show_flights():
         }
 
         response = requests.get(
-            f"{url}/shopping/flight-offers?&max=8", headers=headers, params=params)
+            f"{url}/shopping/flight-offers?&max=3&currencyCode=USD", headers=headers, params=params)
         data = response.json()
-
-        flights = []
 
         for flight in data['data']:
             origin = data['dictionaries']['locations']['EWR']['cityCode']
@@ -142,20 +141,4 @@ def show_flights():
             flights.append(flight_info)
             print(flights)
 
-        return redirect('/search')
-    else:
-        return render_template('flights.html', form=form)
-
-
-# @app.route('/json')
-# def show_json():
-
-#     params = {'originLocationCode': 'SYD',
-#               'destinationLocationCode': 'NYC', "departureDate": "2023-10-10", 'adults': 1}
-
-#     response = requests.get(
-#         f"{url}/shopping/flight-offers?", headers=headers, params=params)
-
-#     data = response.json()
-
-    return data
+    return render_template('search.html', form=form, flights=flights)
