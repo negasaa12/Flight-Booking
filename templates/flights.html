@@ -8,16 +8,26 @@
 
 {% for item in flights %}
 <form method="POST" action="/booking">
-<ul>
-   <li name="origin"> origin:{{item.origin}}</li>
-   <li name="destination">destinaton: {{item.arrival}}</li>
-   <li name="departure"> depature: {{item.departure_date}}</li>
-   <li name="return_date"> return : {{item.return_date}}</li>
-   <li name="price"> price: {{item.price}}</li>
-   <li name="adults"> adults: {{item.adults}}</li>
-   <button type="submit" class="btn btn-success">Book Flight</button>
-</ul>
-</form>
+    <ul>
+       <li> origin:{{item.origin}}</li>
+       <input type="hidden" name="origin" value="{{item.origin}}">
+       <li>destinaton: {{item.arrival}}</li>
+       <input type="hidden" name="destination" value="{{item.arrival}}">
+       <li> depature: {{item.departure_date}}</li>
+       <input type="hidden" name="departure" value="{{item.departure_date}}">
+       <li> return : {{item.return_date}}</li>
+       <input type="hidden" name="return_date" value="{{item.return_date}}">
+       <li> price: {{item.price}}</li>
+       <input type="hidden" name="price" value="{{item.price}}">
+       <li> adults: {{item.adults}}</li>
+       <input type="hidden" name="adults" value="{{item.adults}}">
+       <button type="submit" class="btn btn-success">Book Flight</button>
+    </ul>
+    </form>
+    
+
+
+<a href="/search"></a>
 {% endfor %}
 
 {% endblock %}

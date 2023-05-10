@@ -21,7 +21,8 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "xlYiKUA0ZXGCASKLGSNSG868yDzf"
+token = "GDY5er6L3e60IyVRvzbe8f6Qd70t"
+
 
 headers = {'Authorization': f'Bearer {token}'}
 
@@ -30,10 +31,8 @@ url = 'https://test.api.amadeus.com/v2/'
 
 @app.route('/')
 def home():
-
-    return redirect('/signup')
-
-    # return render_template('home.html')
+    user_id = session.get('user_id')
+    return render_template('home.html', user_id=user_id)
 
 
 @app.route('/signup', methods=["POST", "GET"])
@@ -81,7 +80,7 @@ def login():
 
 @app.route('/user/<int:user_id>')
 def user_detail(user_id):
-
+    """user details """
     user = User.query.get_or_404(user_id)
 
     if "user_id" not in session:
@@ -93,6 +92,7 @@ def user_detail(user_id):
 
 @app.route('/search', methods=["POST", "GET"])
 def search_flights():
+    """Search For Flight"""
     form = AddFligtForm()
     flights = []
 
@@ -141,21 +141,50 @@ def search_flights():
             }
 
             flights.append(flight_info)
-            print(flights)
+
             session['flight_results'] = flights
+
         return redirect('/flights')
     else:
         return render_template('search.html', form=form)
 
 
 @app.route('/flights')
-def flights():
+def ahoflights():
 
     if "user_id" not in session:
         flash("Please Login First!")
     # Retrieve the flight results from the session
     flights = session.get('flight_results', [])
+    id = session.get('user_id')
 
     session.pop('flight_results', None)
 
     return render_template('flights.html', flights=flights)
+
+
+@app.route('/booking', methods=['POST'])
+def booking():
+    origin = request.form.get('origin')
+    destination = request.form.get('destination')
+    departure_date = request.form.get('departure')
+    return_date = request.form.get('return_date')
+    price = request.form.get('price')
+    adults = request.form.get('adults')
+
+    id = session.get('user_id')
+    flight = Flight(
+        origin=origin,
+        destination=destination,
+        depature_date=departure_date,
+        adult=adults,
+        price=float(price),
+        user_id=id
+        # Repla
+    )
+    db.session.add(flight)
+    db.session.commit()
+
+    # Perform any desired processing or database operations with the retrieved data
+
+    return redirect(f'/users/{id}')
