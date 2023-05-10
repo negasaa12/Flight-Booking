@@ -4,7 +4,19 @@
 
 {% block content %}
 
-<h1>Welcome {{user.username}}</h1>
+<h1>Welcome {{user.first_name}}</h1>
+
+
+<h2> My Tickets</h2>
+{% for flight in flights%}
+
+<p> Origin:{{flight.origin}}</p>
+<p> Destination: {{flight.destination}}</p>
+<p> Departure Date: {{flight.depature_date}}</p>
+<p> Return Date:{{flight.return_date}}</p>
+<p> Passengers: {{flight.adults}}</p>
+
+{% endfor %}
 
 
 

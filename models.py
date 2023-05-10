@@ -88,6 +88,8 @@ class Flight(db.Model):
 
     depature_date = db.Column(db.Date, nullable=False)
 
+    return_date = db.Column(db.Date, nullable=False)
+
     adult = db.Column(db.Integer, nullable=False)
 
     price = db.Column(db.Integer, nullable=False)

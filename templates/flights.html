@@ -8,6 +8,7 @@
 
 {% for item in flights %}
 <form method="POST" action="/booking">
+    <img scr="https://www.rd.com/wp-content/uploads/2020/01/GettyImages-1131335393-e1650030686687.jpg">
     <ul>
        <li> origin:{{item.origin}}</li>
        <input type="hidden" name="origin" value="{{item.origin}}">

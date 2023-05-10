@@ -83,11 +83,13 @@ def user_detail(user_id):
     """user details """
     user = User.query.get_or_404(user_id)
 
+    flights = Flight.query.all()
+
     if "user_id" not in session:
         flash("Please Login First!")
         return redirect('/login')
 
-    return render_template('user_details.html', user=user)
+    return render_template('user_details.html', user=user, flights=flights)
 
 
 @app.route('/search', methods=["POST", "GET"])
@@ -177,6 +179,7 @@ def booking():
         origin=origin,
         destination=destination,
         depature_date=departure_date,
+        return_date=return_date,
         adult=adults,
         price=float(price),
         user_id=id
@@ -187,4 +190,4 @@ def booking():
 
     # Perform any desired processing or database operations with the retrieved data
 
-    return redirect(f'/users/{id}')
+    return redirect(f'/user/{id}')
