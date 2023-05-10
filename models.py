@@ -92,6 +92,8 @@ class Flight(db.Model):
 
     price = db.Column(db.Integer, nullable=False)
 
+    # arrival_time = db.Column(db.Integer, nullable=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     airline_id = db.Column(db.Integer, db.ForeignKey('airline.id'))

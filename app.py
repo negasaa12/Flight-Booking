@@ -1,3 +1,4 @@
+from flask import render_template
 from flask import Flask, render_template, request, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import AddFligtForm, SignUp, LogInForm
@@ -20,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "GJe6um1QO901WVcctYvygeIcyG4M"
+token = "QAGOnrHSPKNAu6OQqZ8qRZK7hsZ7"
 
 headers = {'Authorization': f'Bearer {token}'}
 
@@ -85,7 +86,7 @@ def user_detail(user_id):
 
     if "user_id" not in session:
         flash("Please Login First!")
-        return redirect('/signup')
+        return redirect('/login')
 
     return render_template('user_details.html', user=user)
 
@@ -94,31 +95,67 @@ def user_detail(user_id):
 def show_flights():
     form = AddFligtForm()
 
+    if "user_id" not in session:
+        flash("Please Login First!")
+
     if form.validate_on_submit():
         origin = form.origin.data
         destination = form.destination.data
-        date = form.date.data
+        departure_date = form.depature_date.data
+        return_date = form.return_date.data
         adults = form.people.data
 
-    params = {'originLocationCode': 'SYD',
-              'destinationLocationCode': 'NYC', "departureDate": "2023-10-10", 'adults': 1}
-    response = requests.get(
-        f"{url}/shopping/flight-offers?", headers=headers, params=params)
+        params = {
+            'originLocationCode': origin,
+            'destinationLocationCode': destination,
+            'departureDate': departure_date,
+            'returnDate': return_date,
+            'adults': adults
+        }
 
-    data = response.json()
+        response = requests.get(
+            f"{url}/shopping/flight-offers?&max=8", headers=headers, params=params)
+        data = response.json()
 
-    return render_template('flights.html', form=form)
+        flights = []
+
+        for flight in data['data']:
+            origin = data['dictionaries']['locations']['EWR']['cityCode']
+            departure_date = flight['itineraries'][0]['segments'][0]['departure']['at'].split('T')[
+                0]
+            return_date = flight['itineraries'][1]['segments'][0]['arrival']['at'].split('T')[
+                0]
+            price = flight['price']['total']
+            arrival = flight['itineraries'][0]['segments'][0]['arrival']['iataCode']
+            adults = int(data['meta']['links']['self'].split(
+                'adults=')[1].split('&')[0])
+
+            flight_info = {
+                'origin': origin,
+                'departure_date': departure_date,
+                'return_date': return_date,
+                'price': price,
+                'arrival': arrival,
+                'adults': adults
+            }
+
+            flights.append(flight_info)
+            print(flights)
+
+        return redirect('/search')
+    else:
+        return render_template('flights.html', form=form)
 
 
-@app.route('/json')
-def show_json():
+# @app.route('/json')
+# def show_json():
 
-    params = {'originLocationCode': 'SYD',
-              'destinationLocationCode': 'NYC', "departureDate": "2023-10-10", 'adults': 1}
+#     params = {'originLocationCode': 'SYD',
+#               'destinationLocationCode': 'NYC', "departureDate": "2023-10-10", 'adults': 1}
 
-    response = requests.get(
-        f"{url}/shopping/flight-offers?", headers=headers, params=params)
+#     response = requests.get(
+#         f"{url}/shopping/flight-offers?", headers=headers, params=params)
 
-    data = response.json()
+#     data = response.json()
 
     return data
