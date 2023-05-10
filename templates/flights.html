@@ -1,9 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 
 
 
-{% block content%}
+{% block content %} 
+
 <h1> Flights Available</h1>
 
+{% for item in flights %}
+<form method="POST" action="/booking">
+<ul>
+   <li name="origin"> origin:{{item.origin}}</li>
+   <li name="destination">destinaton: {{item.arrival}}</li>
+   <li name="departure"> depature: {{item.departure_date}}</li>
+   <li name="return_date"> return : {{item.return_date}}</li>
+   <li name="price"> price: {{item.price}}</li>
+   <li name="adults"> adults: {{item.adults}}</li>
+   <button type="submit" class="btn btn-success">Book Flight</button>
+</ul>
+</form>
+{% endfor %}
 
 {% endblock %}
