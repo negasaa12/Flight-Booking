@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
-
+{% block nav %} <li><a href="/logout">Logout</a></li> {% endblock %}
 
 {% block content %}
+
+
+
+
+
 
 <h1>Welcome {{user.first_name}}</h1>
 
@@ -20,7 +25,7 @@
             <li>Departure Date: {{flight.depature_date}}</li>
             <li>Return Date:{{flight.return_date}}</li>
             <li>Price: {{flight.price}}</li>
-            <li>Passengers: {{flight.adults}}</li>
+            <li>Passengers: {{flight.adult}}</li>
         </ul>
         <form>
             <button type="submit" class="btn btn-danger">Delete Flight</button>

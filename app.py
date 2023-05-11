@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "44h6H6cdW3cBlAGRoAJulA6pG0pk"
+token = "2J6N2zNgybnxFeOtTKXR9HnocDgT"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -76,6 +76,18 @@ def login():
         flash("Invalid credentials.", 'danger')
 
     return render_template('login.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    """Log out User"""
+
+    if 'user_id' in session:
+        session.pop('user_id')
+        return redirect('/')
+
+    else:
+        return redirect('/search')
 
 
 @app.route('/user/<int:user_id>')
