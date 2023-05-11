@@ -7,28 +7,37 @@
 <h1> Flights Available</h1>
 
 {% for item in flights %}
-<form method="POST" action="/booking">
-    <img scr="https://www.rd.com/wp-content/uploads/2020/01/GettyImages-1131335393-e1650030686687.jpg">
-    <ul>
-       <li> origin:{{item.origin}}</li>
-       <input type="hidden" name="origin" value="{{item.origin}}">
-       <li>destinaton: {{item.arrival}}</li>
-       <input type="hidden" name="destination" value="{{item.arrival}}">
-       <li> depature: {{item.departure_date}}</li>
-       <input type="hidden" name="departure" value="{{item.departure_date}}">
-       <li> return : {{item.return_date}}</li>
-       <input type="hidden" name="return_date" value="{{item.return_date}}">
-       <li> price: {{item.price}}</li>
-       <input type="hidden" name="price" value="{{item.price}}">
-       <li> adults: {{item.adults}}</li>
-       <input type="hidden" name="adults" value="{{item.adults}}">
-       <button type="submit" class="btn btn-success">Book Flight</button>
-    </ul>
-    </form>
+<div class="card" style="width: 18rem;">
+    <img src="https://www.rd.com/wp-content/uploads/2020/01/GettyImages-1131335393-e1650030686687.jpg" width="200" height="200" class="card-img-top" alt="Flight Image">
+    <div class="card-body">
+        <h5 class="card-title">Flight Details</h5>
+        <ul>
+            <li>Origin: {{item.origin}}</li>
+            <li>Destination: {{item.arrival}}</li>
+            <li>Departure: {{item.departure_date}}</li>
+            <li>Return: {{item.return_date}}</li>
+            <li>Price: {{item.price}}</li>
+            <li>Adults: {{item.adults}}</li>
+        </ul>
+        <form method="POST" action="/booking">
+            <input type="hidden" name="origin" value="{{item.origin}}">
+            <input type="hidden" name="destination" value="{{item.arrival}}">
+            <input type="hidden" name="departure" value="{{item.departure_date}}">
+            <input type="hidden" name="return_date" value="{{item.return_date}}">
+            <input type="hidden" name="price" value="{{item.price}}">
+            <input type="hidden" name="adults" value="{{item.adults}}">
+            <button type="submit" class="btn btn-success">Book Flight</button>
+        </form>
+    </div>
+</div>
+
     
 
 
 <a href="/search"></a>
 {% endfor %}
+
+
+
 
 {% endblock %}

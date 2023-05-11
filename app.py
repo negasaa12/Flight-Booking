@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "GDY5er6L3e60IyVRvzbe8f6Qd70t"
+token = "44h6H6cdW3cBlAGRoAJulA6pG0pk"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -152,7 +152,7 @@ def search_flights():
 
 
 @app.route('/flights')
-def ahoflights():
+def show_flights():
 
     if "user_id" not in session:
         flash("Please Login First!")
@@ -167,6 +167,7 @@ def ahoflights():
 
 @app.route('/booking', methods=['POST'])
 def booking():
+    """handle booking"""
     origin = request.form.get('origin')
     destination = request.form.get('destination')
     departure_date = request.form.get('departure')
@@ -174,6 +175,7 @@ def booking():
     price = request.form.get('price')
     adults = request.form.get('adults')
 
+    """make instance of flight"""
     id = session.get('user_id')
     flight = Flight(
         origin=origin,
@@ -187,7 +189,5 @@ def booking():
     )
     db.session.add(flight)
     db.session.commit()
-
-    # Perform any desired processing or database operations with the retrieved data
 
     return redirect(f'/user/{id}')
