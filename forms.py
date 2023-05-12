@@ -5,20 +5,15 @@ from wtforms.validators import InputRequired, Email, Optional, DataRequired, URL
 
 class AddFligtForm(FlaskForm):
 
-    origin = StringField('Origin', validators=[InputRequired(
-        message='Please choose an Origin Destination')])
+    origin = StringField('Origin')
 
-    destination = StringField('Destination', validators=[
-                              InputRequired(message="Please choose a destination")])
+    destination = StringField('Destination')
 
-    depature_date = DateField('Departure Date', format='%Y-%m-%d',
-                              validators=[InputRequired(message='Please choose a date')])
+    depature_date = DateField('Departure Date', format='%Y-%m-%d')
 
-    return_date = DateField('Return Date', format='%Y-%m-%d',
-                            validators=[InputRequired(message='Please choose a date')])
+    return_date = DateField('Return Date', format='%Y-%m-%d')
 
-    people = IntegerField('Adults', validators=[InputRequired(
-        message="Please Choose the number of Adults")])
+    people = IntegerField('Adults')
 
 
 class SignUp(FlaskForm):

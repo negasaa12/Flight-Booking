@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "Wih7qGA5M9GXXbGqllqJTJ5uVIj6"
+token = "A3xAa8kHDwP3v4QiW9A5YQLB5Kef"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -106,7 +106,7 @@ def search_flights():
     """Search For Flight"""
     form = AddFligtForm()
     flights = []
-
+    id = session.get('user_id')
     if "user_id" not in session:
         flash("Please Login First!")
         return redirect('/')
@@ -168,7 +168,7 @@ def search_flights():
 
         return redirect('/flights')
     else:
-        return render_template('search.html', form=form)
+        return render_template('search.html', form=form, id=id)
 
 
 @app.route('/flights')
