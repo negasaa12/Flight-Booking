@@ -1,22 +1,14 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block nav %} 
-<li><a href="/logout">Logout</a></li> 
-<li><a href="/logout">Profile</a></li>
-{% endblock %}
+
 
 {% block content %}
 
 
+<h1> Delete Ticket</h1>
 
 
 
-
-<h1>Welcome {{user.first_name}}</h1>
-
-
-<h2> My Tickets</h2>
-{% for flight in flights%}
 
 <div class="card" style="width: 18rem; margin: 20px;">
     <img src="https://www.rd.com/wp-content/uploads/2020/01/GettyImages-1131335393-e1650030686687.jpg" width="200" height="200" style="margin: 2px;" class="card-img-top" alt="Flight Image">
@@ -30,14 +22,10 @@
             <li>Price: {{flight.price}}</li>
             <li>Passengers: {{flight.adult}}</li>
         </ul>
-        <form  action="/delete/ticket/{{flight.id}}">
-            <button type="submit" class="btn btn-secondary">Edit</button>
+        <form action="/delete/ticket/{{ flight.id }}" method="POST">
+            <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </div>
 </div>
-
-{% endfor %}
-
-
 
 {% endblock %}

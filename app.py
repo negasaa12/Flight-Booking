@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "A3xAa8kHDwP3v4QiW9A5YQLB5Kef"
+token = "XDF5tQ9H1miRwSAyH1ck3GHh1ZYE"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -217,3 +217,18 @@ def booking():
     db.session.commit()
 
     return redirect(f'/user/{id}')
+
+
+@app.route('/delete/ticket/<int:ticket_id>', methods=["GET", "POST"])
+def delete_ticket(ticket_id):
+    id = session.get('user_id')
+
+    flight = Flight.query.get_or_404(ticket_id)
+
+    if request.method == "POST":
+        db.session.delete(flight)
+        db.session.commit()
+
+        return redirect(f'/user/{id}')
+
+    return render_template('delete_ticket.html', flight=flight)
