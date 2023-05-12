@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "2J6N2zNgybnxFeOtTKXR9HnocDgT"
+token = "Wih7qGA5M9GXXbGqllqJTJ5uVIj6"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -86,9 +86,6 @@ def logout():
         session.pop('user_id')
         return redirect('/')
 
-    else:
-        return redirect('/search')
-
 
 @app.route('/user/<int:user_id>')
 def user_detail(user_id):
@@ -112,6 +109,7 @@ def search_flights():
 
     if "user_id" not in session:
         flash("Please Login First!")
+        return redirect('/')
 
     if form.validate_on_submit():
         origin = form.origin.data
@@ -126,7 +124,7 @@ def search_flights():
             'departureDate': departure_date,
             'returnDate': return_date,
             'adults': adults,
-            'max': '3',
+            'max': '4',
             'currencyCode': 'USD'
         }
 
@@ -145,16 +143,26 @@ def search_flights():
             adults = int(data['meta']['links']['self'].split(
                 'adults=')[1].split('&')[0])
 
+            departure_time = flight['itineraries'][0]['segments'][0]['departure']['at'].split(
+                'T')[-1]
+            arrival_time = flight['itineraries'][1]['segments'][0]['arrival']['at'].split('T')[
+                -1]
+            roundtrip = len(flight) > 1
+
             flight_info = {
                 'origin': origin,
                 'departure_date': departure_date,
                 'return_date': return_date,
                 'price': price,
                 'arrival': arrival,
-                'adults': adults
+                'adults': adults,
+                'departure_time': departure_time,
+                'arrival_time': arrival_time,
+                'roundtrip': roundtrip
             }
 
             flights.append(flight_info)
+            print(flights)
 
             session['flight_results'] = flights
 
@@ -186,13 +194,19 @@ def booking():
     return_date = request.form.get('return_date')
     price = request.form.get('price')
     adults = request.form.get('adults')
+    departure_time = request.form.get('departure_time')
+    roundtrip = request.form.get('roundtrip')
+    arrival_time = request.form.get('arrival_time')
 
     """make instance of flight"""
     id = session.get('user_id')
     flight = Flight(
         origin=origin,
         destination=destination,
+        departure_time=departure_time,
+        arrival_time=arrival_time,
         depature_date=departure_date,
+
         return_date=return_date,
         adult=adults,
         price=float(price),
