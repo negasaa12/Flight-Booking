@@ -4,6 +4,18 @@
 {% block content %} 
     <h1>Find Your Flight For Your Travels </h1>
     
+
+
+    
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <div class="alert alert-success" role="alert">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  </div>
+{% endif %}
+{% endwith %}
 <div class="input-group mb-4">
     <form method="POST">
         {{ form.hidden_tag() }}
@@ -13,6 +25,7 @@
             <div class="form-group">
                 {{field.label}}
                 {{field(class_="form-control")}}
+              
             </div>
         {% endfor %}
         <button type="submit" class="btn btn-success">Submit</button>

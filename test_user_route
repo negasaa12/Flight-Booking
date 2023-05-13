@@ -1,0 +1,58 @@
+import unittest
+from app import app, db, User, SignUp
+
+
+class SignupTestCase(unittest.TestCase):
+
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'your_test_database_uri'
+        self.app = app.test_client()
+        with app.app_context():
+            db.create_all()
+
+    def tearDown(self):
+        with app.app_context():
+            db.drop_all()
+
+    def test_signup_success(self):
+        # Prepare test data
+        data = {
+            'username': 'testuser',
+            'password': 'password',
+            'email': 'test@example.com',
+            'first_name': 'John',
+            'last_name': 'Doe'
+        }
+
+        # Send POST request to the signup route
+        response = self.app.post('/signup', data=data, follow_redirects=True)
+
+        # Check the response
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Login', response.data)
+
+        # Check if the user was created in the database
+        with app.app_context():
+            user = User.query.filter_by(username='testuser').first()
+            self.assertIsNotNone(user)
+            self.assertEqual(user.email, 'test@example.com')
+
+    def test_signup_invalid_data(self):
+        # Prepare test data with missing required fields
+        data = {
+            'username': 'testuser',
+            'password': 'password',
+        }
+
+        # Send POST request to the signup route
+        response = self.app.post('/signup', data=data, follow_redirects=True)
+
+        # Check the response
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Sign Up', response.data)
+
+        # Check if the user was not created in the database
+        with app.app_context():
+            user = User.query.filter_by(username='testuser').first()
+            self.assertIsNone(user)

@@ -6,6 +6,20 @@
 
 <h1> Flights Available</h1>
 
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-danger" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+
+
 {% for item in flights %}
 <div class="card" style="width: 18rem; margin: 20px">
     <img src="https://www.rd.com/wp-content/uploads/2020/01/GettyImages-1131335393-e1650030686687.jpg" width="200" height="200" class="card-img-top" alt="Flight Image">
@@ -17,10 +31,11 @@
 
             <li>Departure Date: {{item.departure_date}} at {{item.departure_time}}AM</li>
             <li>Return Date: {{item.return_date}} at {{item.arrival_time}} </li>
-            <li>Price: {{item.price}}</li>
+            <li>Price: ${{item.price}}</li>
             <li>Adults: {{item.adults}}</li>
-            <li>RoundTrip: {{item.roundtrip}}</li>
-           
+            {% if item.roundtrip == True%}
+            <li>RoundTrip: Yes</li>
+           {% endif %}
         </ul>
         <form method="POST" action="/booking">
             <input type="hidden" name="origin" value="{{item.origin}}">

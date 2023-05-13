@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "XDF5tQ9H1miRwSAyH1ck3GHh1ZYE"
+token = "FPr8DQRcAnMuBwDIe14Kji3nIJ66"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -69,7 +69,7 @@ def login():
 
         if user:
 
-            flash(f"Welcome Back, {user.username}!")
+            flash(f"Welcome Back, {user.first_name}!")
             session['user_id'] = user.id
             return redirect(f'/user/{user.id}')
 
@@ -98,8 +98,13 @@ def user_detail(user_id):
         flash("Please Login First!")
         return redirect('/login')
 
+    if len(flights) == 0:
+        flash("It's time to book your perfect flight!")
+
     return render_template('user_details.html', user=user, flights=flights)
 
+
+#########################################################  FLIGHTS ##########################################################################
 
 @app.route('/search', methods=["POST", "GET"])
 def search_flights():
@@ -173,14 +178,20 @@ def search_flights():
 
 @app.route('/flights')
 def show_flights():
+    """show flight """
 
     if "user_id" not in session:
         flash("Please Login First!")
     # Retrieve the flight results from the session
     flights = session.get('flight_results', [])
+
     id = session.get('user_id')
 
     session.pop('flight_results', None)
+
+    if len(flights) == 0:
+        flash('Look for your perfect flight now!')
+        return redirect('/search')
 
     return render_template('flights.html', flights=flights)
 
@@ -221,14 +232,16 @@ def booking():
 
 @app.route('/delete/ticket/<int:ticket_id>', methods=["GET", "POST"])
 def delete_ticket(ticket_id):
+    """Delete ticket"""
     id = session.get('user_id')
 
     flight = Flight.query.get_or_404(ticket_id)
-
+    if "user_id" not in session:
+        flash("Please Login First!")
     if request.method == "POST":
         db.session.delete(flight)
         db.session.commit()
-
+        flash('Flight Deleted')
         return redirect(f'/user/{id}')
 
     return render_template('delete_ticket.html', flight=flight)

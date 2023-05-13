@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block nav %} 
-<li><a href="/logout">Logout</a></li> 
-<li><a href="/logout">Profile</a></li>
+<li class="nav-item">
+  <a class="nav-link" href="/logout">Log Out</a>
+</li>
 {% endblock %}
 
 {% block content %}
@@ -12,11 +13,26 @@
 
 
 
-<h1>Welcome {{user.first_name}}</h1>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-success" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
 
+<h1 clas=" mb-4"> Hello, {{user.first_name}}</h1>
 <h2> My Tickets</h2>
-{% for flight in flights%}
+
+
+
+{% for flight in flights %}
+
+
+
 
 <div class="card" style="width: 18rem; margin: 20px;">
     <img src="https://www.rd.com/wp-content/uploads/2020/01/GettyImages-1131335393-e1650030686687.jpg" width="200" height="200" style="margin: 2px;" class="card-img-top" alt="Flight Image">
@@ -29,6 +45,9 @@
             <li>Return Date:{{flight.return_date}}</li>
             <li>Price: {{flight.price}}</li>
             <li>Passengers: {{flight.adult}}</li>
+            {% if flight.roundtrip == 'True'%}
+            <li> RoundTrip</li>
+            {% endif%}
         </ul>
         <form  action="/delete/ticket/{{flight.id}}">
             <button type="submit" class="btn btn-secondary">Edit</button>
