@@ -1,5 +1,5 @@
 import unittest
-from app import app, db, User, SignUp
+from app import app, db, User, SignUp, LogInForm
 
 
 class SignupTestCase(unittest.TestCase):
@@ -56,3 +56,54 @@ class SignupTestCase(unittest.TestCase):
         with app.app_context():
             user = User.query.filter_by(username='testuser').first()
             self.assertIsNone(user)
+
+
+########################################################
+
+class LoginTestCase(unittest.TestCase):
+
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///flight_db'
+        self.app = app.test_client()
+        with app.app_context():
+            db.create_all()
+
+    def tearDown(self):
+        with app.app_context():
+            db.drop_all()
+
+    def test_login_success(self):
+        # Create a test user
+        user = User.register(username='testuser', password='password', email='test@example.com',
+                             first_name='John', last_name='Doe')
+        with app.app_context():
+            db.session.add(user)
+            db.session.commit()
+
+        # Prepare test data
+        data = {
+            'username': 'testuser',
+            'password': 'password',
+        }
+
+        # Send POST request to the login route
+        response = self.app.post('/login', data=data, follow_redirects=True)
+
+        # Check the response
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Welcome Back, John!', response.data)
+
+    def test_login_invalid_credentials(self):
+        # Prepare test data with invalid credentials
+        data = {
+            'username': 'testuser',
+            'password': 'wrong_password',
+        }
+
+        # Send POST request to the login route
+        response = self.app.post('/login', data=data, follow_redirects=True)
+
+        # Check the response
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Invalid credentials.', response.data)

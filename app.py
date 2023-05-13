@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "FPr8DQRcAnMuBwDIe14Kji3nIJ66"
+token = "GbXdUKle2fv410hqzAkD9A1FTzpT"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -138,7 +138,7 @@ def search_flights():
         data = response.json()
 
         for flight in data['data']:
-            origin = data['dictionaries']['locations']['EWR']['cityCode']
+            origin = flight['itineraries'][0]['segments'][0]['departure']["iataCode"]
             departure_date = flight['itineraries'][0]['segments'][0]['departure']['at'].split('T')[
                 0]
             return_date = flight['itineraries'][1]['segments'][0]['arrival']['at'].split('T')[
