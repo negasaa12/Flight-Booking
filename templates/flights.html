@@ -4,7 +4,7 @@
 
 {% block content %} 
 
-<h1 class="diaplay-3"> Flights Available</h1>
+<h1 class="mb-4 ml-4 display-4 "> Flights available</h1>
 
 
 
@@ -34,7 +34,10 @@
             <li>Price: ${{item.price}}</li>
             <li>Adults: {{item.adults}}</li>
             {% if item.roundtrip == True%}
-            <li>RoundTrip: Yes</li>
+            <li>Round Trip: Yes</li>
+            {% else %}
+            <li> Round Trip: No</li>
+
            {% endif %}
         </ul>
         <form method="POST" action="/booking">

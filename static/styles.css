@@ -49,3 +49,14 @@
   }
   
   
+
+  .form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .form-inline input {
+    margin-right: 10px;
+  }
+  

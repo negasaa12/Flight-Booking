@@ -1,7 +1,7 @@
 from flask import render_template
 from flask import Flask, render_template, request, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import AddFligtForm, SignUp, LogInForm
+from forms import AddFligtForm, SignUp, LogInForm, UpdateUserForm
 from models import db, connect_db, User, Flight
 from flask_bcrypt import Bcrypt
 import requests
@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "Wsfg4ngY9UwBGtcJ4U4m7QZyAxNz"
+token = "NqfFM5apmYDnGgd6PAA6uMqW0tB2"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -85,6 +85,34 @@ def logout():
     if 'user_id' in session:
         session.pop('user_id')
         return redirect('/')
+
+
+@app.route('/user/profile', methods=["POST", "GET"])
+def edit_user():
+    """UPDATE USER """
+
+    form = UpdateUserForm()
+    user = User.query.get_or_404(session['user_id'])
+
+    if "user_id" not in session:
+        flash("Please Login First!")
+        return redirect('/login')
+
+    if form.validate_on_submit():
+
+        if User.authenticate(user.username, form.password.data):
+            user.username = form.username.data or user.username
+            user.email = form.email.data or user.email
+            user.first_name = form.first_name.data or user.first_name
+            user.last_name = form.last_name.data or user.last_name
+
+            db.session.commit()
+            flash('Edits confirmed!')
+            return redirect(f"/user/{session['user_id']}")
+
+        flash('WRONG PASSWORD, Please Try Again!')
+
+    return render_template('edit.html', form=form)
 
 
 @app.route('/user/<int:user_id>')

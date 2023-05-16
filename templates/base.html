@@ -28,7 +28,7 @@
         </li>
       {% else %}
       <li class="nav-item active">
-        <a class="nav-link" href="">Home</a>
+        <a class="nav-link" href="/">Home</a>
 
         {% endif %}
         <li class="nav-item">
@@ -42,7 +42,12 @@
         </li>
         {% if 'user_id' in session %}
         <li class="nav-item active">
+          <a class="nav-link" href="/user/profile">Settings</a>
+
+        <li class="nav-item active">
           <a class="nav-link" href="/logout">Logout</a>
+
+        
         </li>
         
         {% endif %}

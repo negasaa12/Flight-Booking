@@ -31,3 +31,12 @@ class LogInForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
+
+
+class UpdateUserForm(FlaskForm):
+
+    username = StringField('Username')
+    email = StringField('E-mail')
+    password = PasswordField('Password', validators=[Length(min=6)])
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
