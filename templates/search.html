@@ -2,7 +2,7 @@
 
 
 {% block content %} 
-    <h1>Find Your Flight For Your Travels </h1>
+    <h1  id="search_h1"class="display-4 mt-4 mb-4">Find Your Flight For Your Travels </h1>
     
 
 
@@ -16,20 +16,23 @@
   </div>
 {% endif %}
 {% endwith %}
-<div class="input-group mb-4">
-    <form method="POST">
+
+
+
+<div class="row justify-content-md-center">
+    <form method="POST" class="custom-form">
         {{ form.hidden_tag() }}
     
         {% for field in form if field.widget.input_type != 'hidden' %}
     
             <div class="form-group">
-                {{field.label}}
+                {{field.label(class="label")}}
                 {{field(class_="form-control")}}
               
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-success">Submit</button>
-        <a href="/user/{{id}}" class="btn btn-danger">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/user/{{id}}" class="btn btn-secondary">Cancel</a>
 
     </form>
    

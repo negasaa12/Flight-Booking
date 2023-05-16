@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "GbXdUKle2fv410hqzAkD9A1FTzpT"
+token = "Wsfg4ngY9UwBGtcJ4U4m7QZyAxNz"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -226,6 +226,7 @@ def booking():
     )
     db.session.add(flight)
     db.session.commit()
+    flash('Flight Booked!!')
 
     return redirect(f'/user/{id}')
 
