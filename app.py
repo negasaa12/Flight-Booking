@@ -6,7 +6,6 @@ from models import db, connect_db, User, Flight
 from flask_bcrypt import Bcrypt
 import requests
 
-# CURR_USER_KEY = 'curr_user'
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///flight_db'
@@ -21,7 +20,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "NqfFM5apmYDnGgd6PAA6uMqW0tB2"
+token = "J5dOiqVnFM6pnlE1gT1VzsPSf9BA"
 
 
 headers = {'Authorization': f'Bearer {token}'}
