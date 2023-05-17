@@ -38,6 +38,9 @@
   <hr>
   <p class="ticket_p">{{ flight.depature_date }} at {{ flight.departure_time }}</p>
   <p class="ticket_p">{{ flight.return_date }} at {{ flight.arrival_time }}</p>
+  <form  action="/delete/ticket/{{flight.id}}">
+    <button type="submit" class="btn btn-secondary">Edit</button>
+</form>
 </div>
 <!-- 
 
