@@ -60,3 +60,35 @@
     margin-right: 10px;
   }
   
+
+
+  .ticket_h1{
+    color: rgb(102, 102, 158);
+  }
+
+ 
+
+.ticket_container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius:  10px;
+    border-color: rgb(102, 102, 158); 
+}
+
+
+
+.ticket_p {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 1.4;
+  color: #666666;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #dddddd;
+    margin: 20px 0;
+}

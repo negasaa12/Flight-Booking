@@ -5,7 +5,7 @@ from forms import AddFligtForm, SignUp, LogInForm, UpdateUserForm
 from models import db, connect_db, User, Flight
 from flask_bcrypt import Bcrypt
 import requests
-
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///flight_db'
@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = "HELLO"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
 debug = DebugToolbarExtension(app)
 app.secret_key = 'shhwewaeadsdwefafhh'
 
@@ -20,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "J5dOiqVnFM6pnlE1gT1VzsPSf9BA"
+token = "EYyOhTG6cC7zyG2F3ZwZLkcxpzjC"
 
 
 headers = {'Authorization': f'Bearer {token}'}
@@ -125,6 +126,14 @@ def user_detail(user_id):
         flash("Please Login First!")
         return redirect('/login')
 
+    for flight in flights:
+
+        flight.departure_time = flight.departure_time.strftime('%I:%M %p')
+        flight.arrival_time = flight.arrival_time.strftime('%I:%M %p')
+        flight.depature_date = flight.depature_date.strftime('%B %d, 20%y')
+        flight.return_date = flight.return_date.strftime('%B %d, 20%y')
+        flight.price = '${:,.2f}'.format(flight.price)
+
     if len(flights) == 0:
         flash("It's time to book your perfect flight!")
 
@@ -215,6 +224,16 @@ def show_flights():
     id = session.get('user_id')
 
     session.pop('flight_results', None)
+
+    for flight in flights:
+        flight['departure_time'] = datetime.strptime(
+            flight['departure_time'], '%H:%M:%S').strftime('%I:%M %p')
+        flight['arrival_time'] = datetime.strptime(
+            flight['arrival_time'], '%H:%M:%S').strftime('%I:%M %p')
+        flight['departure_date'] = datetime.strptime(
+            flight['departure_date'], '%Y-%m-%d').strftime('%B %d, %Y')
+        flight['return_date'] = datetime.strptime(
+            flight['return_date'], '%Y-%m-%d').strftime('%B %d, %Y')
 
     if len(flights) == 0:
         flash('Look for your perfect flight now!')
