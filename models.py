@@ -117,5 +117,3 @@ class Airline(db.Model):
     name = db.Column(db.String, nullable=False)
 
     code = db.Column(db.String, nullable=False)
-
-    """code and city Airport model"""

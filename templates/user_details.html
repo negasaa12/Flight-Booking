@@ -20,11 +20,11 @@
 {% endwith %}
 
 
-<h1 class=" mb-4 ml-4 display-4"> Welcome back, {{user.first_name}}!</h1>
+<h1 class=" mb-4 ml-4 mt-3 display-4"> Welcome back, {{user.first_name}}!</h1>
 
 
 
-<h2 class="mt-5 ml-3"> My Trips</h2>
+<h2   id="mytrip" > My Trips</h2>
 
 
 {% for flight in flights %}
@@ -40,6 +40,7 @@
   <p class="ticket_p">{{ flight.return_date }} at {{ flight.arrival_time }}</p>
   <form  action="/delete/ticket/{{flight.id}}">
     <button type="submit" class="btn btn-secondary">Edit</button>
+   
 </form>
 </div>
 <!-- 

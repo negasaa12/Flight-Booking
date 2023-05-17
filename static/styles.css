@@ -92,3 +92,11 @@ hr {
     border-top: 1px solid #dddddd;
     margin: 20px 0;
 }
+
+#mytrip {
+  text-align: center;
+  margin: 0 auto;
+  font-size: 50px;
+  color: rgb(102, 102, 158);
+
+}

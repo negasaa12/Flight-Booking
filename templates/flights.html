@@ -29,7 +29,7 @@
   <p class="ticket_p">{{ flight.depature_date }} at {{ flight.departure_time }}</p>
   <p class="ticket_p">{{ flight.return_date }} at {{ flight.arrival_time }}</p>
   <p class="ticket_p">{{flight.price}} </p>
-  <p class="ticket_p">{{flight.adults}} </p>
+  <p class="ticket_p"> Passengers: {{flight.adults}} </p>
   <p class="ticket_p"> </p>
   <form method="POST" action="/booking">
     <input type="hidden" name="origin" value="{{flight.origin}}">

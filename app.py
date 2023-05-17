@@ -21,7 +21,7 @@ app.app_context().push()
 
 connect_db(app)
 
-token = "EYyOhTG6cC7zyG2F3ZwZLkcxpzjC"
+token = "AqJwlV3OtnwKboNmUd3tDEVK5quC"
 
 
 headers = {'Authorization': f'Bearer {token}'}
